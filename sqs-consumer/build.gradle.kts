@@ -41,5 +41,5 @@ dependencies {
 
 tasks.withType<Test> {
     useJUnitPlatform()
-    systemProperties["pact.rootDir"] = "$buildDir/custom-pacts-directory"
+    systemProperties["pact.rootDir"] = "$projectDir/pacts"
 }
