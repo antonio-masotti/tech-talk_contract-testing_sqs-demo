@@ -1,0 +1,72 @@
+openapi: 3.0.1
+info:
+  title: SQS Producer
+  description: Demo API to showcase SQS Producer and contract Testing
+  version: 0.0.1
+externalDocs:
+  url: /
+servers:
+  - url: http://localhost:8080
+    description: Development server
+tags: []
+paths:
+  /hello:
+    get:
+      tags:
+        - Basics
+      description: Simple 'Hello World'- Route
+      parameters: []
+      responses:
+        '200':
+          description: Successful Response
+          headers: {}
+      deprecated: false
+  /send:
+    post:
+      tags:
+        - Queue Operations
+      summary: Send message to SQS
+      description: Send messages to SQS
+      parameters: []
+      requestBody:
+        description: Message to send
+        content:
+          text/plain:
+            schema:
+              type: string
+            examples:
+              json:
+                value: '{"name": "Toni", "message": "Hey everybody"}'
+              plain:
+                value: Hello World!
+      responses:
+        '200':
+          description: Successful Response with the ID of the sent message
+          headers:
+            Content-Type:
+              schema:
+                type: string
+          content:
+            text/plain:
+              schema:
+                type: string
+              examples:
+                plain:
+                  value: 'Message sent with id: 123456789'
+        '503':
+          description: Service Unavailable
+          headers:
+            Content-Type:
+              schema:
+                type: string
+          content:
+            text/plain:
+              schema:
+                type: string
+              examples:
+                plain:
+                  value: Service Unavailable
+      deprecated: false
+components:
+  schemas: {}
+  examples: {}

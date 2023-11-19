@@ -1,0 +1,112 @@
+Test directory /Users/antoniomasotti/bikeleasing/talks/contract_testing/pact-sqs-demo/sqs-producer/src/main/resources/openapi/documentation_tests not found
+Endpoints API not found, cannot calculate actual coverage
+
+--------------------
+  Request to http://localhost:8080 at 2023-11-19 8:23:26.880
+    GET /hello
+    Accept-Charset: UTF-8
+    Accept: */*
+    
+    
+
+  Response at 2023-11-19 8:23:26.880
+    200 OK
+    X-Engine: Ktor
+    Date: Sun, 19 Nov 2023 19:23:26 GMT
+    Server: Ktor/2.3.6
+    Content-Length: 12
+    Content-Type: text/plain; charset=UTF-8
+    Connection: keep-alive
+    
+    Hello World!
+
+ Scenario: GET /hello -> 200 FAILED
+Reason: Testing scenario "GET /hello. Response: Successful Response"
+	API: GET /hello -> 200
+	
+	  >> RESPONSE.BODY
+	  
+	     Contract expected empty string but response contained "Hello World!"
+
+
+
+--------------------
+  Request to http://localhost:8080 at 2023-11-19 8:23:27.84
+    POST /send
+    Accept-Charset: UTF-8
+    Accept: */*
+    
+    Hello World!
+
+  Response at 2023-11-19 8:23:27.85
+    500 Internal Server Error
+    X-Engine: Ktor
+    Date: Sun, 19 Nov 2023 19:23:26 GMT
+    Server: Ktor/2.3.6
+    Content-Length: 0
+    Connection: keep-alive
+    
+    
+
+ Scenario: POST /send -> 200 | plain FAILED
+Reason: Testing scenario "Send message to SQS. Response: Successful Response with the ID of the sent message"
+	API: POST /send -> 200
+	
+	  >> RESPONSE.STATUS
+	  
+	     Expected status 200, actual was status 500
+
+
+
+--------------------
+  Request to http://localhost:8080 at 2023-11-19 8:23:27.266
+    POST /send
+    Accept-Charset: UTF-8
+    Accept: */*
+    
+    Hello World!
+
+  Response at 2023-11-19 8:23:27.266
+    500 Internal Server Error
+    X-Engine: Ktor
+    Date: Sun, 19 Nov 2023 19:23:26 GMT
+    Server: Ktor/2.3.6
+    Content-Length: 0
+    Connection: keep-alive
+    
+    
+
+ Scenario: POST /send -> 503 | plain FAILED
+Reason: Testing scenario "Send message to SQS. Response: Service Unavailable"
+	API: POST /send -> 503
+	
+	  >> RESPONSE.STATUS
+	  
+	     Expected status 503, actual was status 500
+
+
+
+Unsuccessful Scenarios:
+  " Scenario: GET /hello -> 200 FAILED"
+        Reason: Testing scenario "GET /hello. Response: Successful Response"
+    	API: GET /hello -> 200
+  
+    	  >> RESPONSE.BODY
+	  
+    	     Contract expected empty string but response contained "Hello World!"
+  " Scenario: POST /send -> 200 | plain FAILED"
+        Reason: Testing scenario "Send message to SQS. Response: Successful Response with the ID of the sent message"
+    	API: POST /send -> 200
+  
+    	  >> RESPONSE.STATUS
+	  
+    	     Expected status 200, actual was status 500
+  " Scenario: POST /send -> 503 | plain FAILED"
+        Reason: Testing scenario "Send message to SQS. Response: Service Unavailable"
+    	API: POST /send -> 503
+  
+    	  >> RESPONSE.STATUS
+	  
+    	     Expected status 503, actual was status 500
+
+Tests run: 3, Successes: 0, Failures: 3, Errors: 0

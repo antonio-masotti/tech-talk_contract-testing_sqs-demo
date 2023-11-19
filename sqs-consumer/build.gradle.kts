@@ -33,6 +33,7 @@ dependencies {
     implementation("aws.sdk.kotlin:sqs:0.24.0-beta")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.2")
     implementation("com.slack.api:slack-api-client:1.30.0")
+    implementation("io.ktor:ktor-server-swagger-jvm")
 
     testImplementation("io.ktor:ktor-server-tests-jvm")
     testImplementation("org.junit.jupiter:junit-jupiter:5.9.2")

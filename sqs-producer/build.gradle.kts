@@ -20,6 +20,9 @@ application {
 
 repositories {
     mavenCentral()
+    repositories {
+        maven { url = uri("https://jitpack.io") }
+    }
 }
 
 dependencies {
@@ -31,6 +34,8 @@ dependencies {
     implementation("ch.qos.logback:logback-classic:$logback_version")
 
     implementation("aws.sdk.kotlin:sqs:0.24.0-beta")
+    implementation("io.github.smiley4:ktor-swagger-ui:2.7.1")
+
 
     testImplementation("io.ktor:ktor-server-tests-jvm")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
