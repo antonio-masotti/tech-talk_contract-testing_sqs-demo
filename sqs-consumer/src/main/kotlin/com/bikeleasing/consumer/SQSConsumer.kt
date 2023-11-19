@@ -2,8 +2,8 @@ package com.bikeleasing.consumer
 
 import aws.sdk.kotlin.services.sqs.SqsClient
 import aws.sdk.kotlin.services.sqs.model.DeleteMessageRequest
-import aws.sdk.kotlin.services.sqs.model.Message
 import aws.sdk.kotlin.services.sqs.model.ReceiveMessageRequest
+import aws.sdk.kotlin.services.sqs.model.ReceiveMessageResponse
 import com.bikeleasing.slack.SlackService
 import kotlinx.coroutines.*
 import org.slf4j.LoggerFactory
@@ -13,16 +13,16 @@ class SQSConsumer(sqsClient: SqsClient? = null) {
     private val slackService: SlackService = SlackService()
     private val logger = LoggerFactory.getLogger(javaClass)
 
-    fun pollMessages() {
+    fun processMessages() {
         CoroutineScope(Dispatchers.IO).launch {
             while (true) {
                 try {
-                    val messages = getMessages()
-                    logger.info("Received ${messages?.size} messages")
-                    messages?.forEach { message ->
+                    val messages = pollMessages()
+                    logger.info("----------------------------------------")
+                    logger.info("Received ${messages.size} messages")
+                    messages.forEach { message ->
                         logger.info("Message: ${message.body}")
-
-                        message.body?.let {
+                        message.body.let {
                             slackService.sendMessage(it)
                         }
 
@@ -33,30 +33,64 @@ class SQSConsumer(sqsClient: SqsClient? = null) {
                 } catch (e: Exception) {
                     logger.error("Error polling messages: ${e.message}", e)
                 }
+                logger.info("----------------------------------------")
                 delay(3000)
             }
         }
     }
 
-    private suspend fun getMessages(): List<Message>? {
+    private suspend fun pollMessages(): List<SQSMessage> {
 
         val receiveMessageRequest = ReceiveMessageRequest {
-            queueUrl = "https://sqs.eu-central-1.amazonaws.com/697345274579/contract-testing"
-            maxNumberOfMessages = 10
-            waitTimeSeconds = 10
+            queueUrl = System.getenv("QUEUE_URL")
+            maxNumberOfMessages = 2
+            waitTimeSeconds = 1
+            messageAttributeNames = listOf("destination")
         }
 
         val resp = client.receiveMessage(receiveMessageRequest)
-        return resp.messages
+        return parseMessages(resp)
     }
 
+    /**
+     * Deletes a message from the SQS queue after it has been processed
+     */
     private suspend fun deleteMessage(receiptHandle: String) {
         val deleteMessageRequest = DeleteMessageRequest {
-            queueUrl = "https://sqs.eu-central-1.amazonaws.com/697345274579/contract-testing"
+            queueUrl = System.getenv("QUEUE_URL")
             this.receiptHandle = receiptHandle
         }
         client.deleteMessage(deleteMessageRequest)
     }
+
+    /**
+     * Parses the messages from the response into my own SQSMessage class
+     * @param resp The response from the SQS queue
+     * @return A list of SQSMessage objects or an empty list if no messages were found
+     */
+    private fun parseMessages(resp: ReceiveMessageResponse): List<SQSMessage> {
+        val messages = resp.messages?.map { message ->
+
+            val attributes = message.messageAttributes?.map { (key, value) ->
+                key to MessageAttribute(
+                    stringValue = value.stringValue ?: "",
+                    dataType = value.dataType ?: ""
+                )
+            }?.toMap()
+
+            SQSMessage(
+                attributes = message.attributes,
+                body = message.body ?: "",
+                messageAttributes = attributes ?: emptyMap(),
+                md5OfBody = message.md5OfBody ?: "",
+                messageId = message.messageId ?: "",
+                receiptHandle = message.receiptHandle
+            )
+        }
+        return messages ?: emptyList()
+    }
+
+
 
 
 

@@ -15,6 +15,6 @@ fun main() {
 fun Application.module() {
     val consumer = SQSConsumer() // Consider injecting this
     launch {
-        consumer.pollMessages()
+        consumer.processMessages()
     }
 }

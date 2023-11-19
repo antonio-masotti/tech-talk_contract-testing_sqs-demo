@@ -1,13 +1,15 @@
 package com.bikeleasing.consumer
 
 import au.com.dius.pact.consumer.MessagePactBuilder
-import au.com.dius.pact.consumer.dsl.LambdaDsl.newJsonBody
+import au.com.dius.pact.consumer.dsl.PactDslJsonBody
 import au.com.dius.pact.consumer.junit5.PactConsumerTestExt
 import au.com.dius.pact.consumer.junit5.PactTestFor
 import au.com.dius.pact.consumer.junit5.ProviderType
 import au.com.dius.pact.core.model.PactSpecVersion
 import au.com.dius.pact.core.model.annotations.Pact
+import au.com.dius.pact.core.model.messaging.Message
 import au.com.dius.pact.core.model.messaging.MessagePact
+import kotlinx.serialization.json.Json
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
@@ -17,27 +19,36 @@ import org.junit.jupiter.api.extension.ExtendWith
 class SQSConsumerContractTest {
 
 
-    private val jsonBody = newJsonBody { root ->
-        root.stringValue("body", "Hello World!")
-    }.build()
+    private val jsonBody = PactDslJsonBody().apply {
+        stringValue("body", "Hello World!")
+        stringValue("messageId", "1a1129dd-21ba-44b8-a095-0c8a3e687b63")
+        stringValue("md5OfBody", "ed076287532e86365e841e92bfc50d8c")
+        like("messageAttributes", mapOf("destination" to mapOf("stringValue" to "slack", "dataType" to "String")))
+    }
+
 
     @Pact(consumer = "sqs-consumer", provider = "contract-testing")
-    fun getMessages(builder: MessagePactBuilder): MessagePact =
+    fun createPact(builder: MessagePactBuilder): MessagePact =
         builder
-            .given("a message")
-            .expectsToReceive("a message")
-            .withMetadata(mapOf("Content-Type" to "application/json"))
+            .given("the provider has sent a message")
+            .expectsToReceive("a test message with the body Hello World!")
+            .hasPactWith("contract-testing")
             .withContent(jsonBody)
             .toPact()
 
     @Test
-    @PactTestFor(pactMethod = "getMessages")
-    fun testGetMessages(pact: MessagePact) {
-        assert(pact.messages.isNotEmpty())
-        pact.messages.forEach { message ->
-            println(message.contents.valueAsString())
-            assert(message.contents.valueAsString() == "{\"body\":\"Hello World!\"}")
-            assert(message.metadata.containsValue("application/json"))
+    @PactTestFor(pactMethod = "createPact", providerName = "contract-testing")
+    fun testMessages(messages: List<Message>) {
+        assert(messages.isNotEmpty())
+
+        val message = messages.first()
+        val sqsMessage = Json.decodeFromString<SQSMessage>(message.contents.valueAsString())
+
+        assert(sqsMessage.md5OfBody == "ed076287532e86365e841e92bfc50d8c")
+        assert(sqsMessage.body == "Hello World!")
+
+        if (sqsMessage.messageAttributes.isNotEmpty()) {
+            assert(sqsMessage.messageAttributes["destination"]?.stringValue == "slack")
         }
     }
 

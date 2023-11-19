@@ -5,6 +5,7 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.encodeToString
 
 class SlackService {
+    private val logger = org.slf4j.LoggerFactory.getLogger(javaClass)
     private val webhook = System.getenv("SLACK_URL")
     private val slack = Slack.getInstance()
 
@@ -17,7 +18,7 @@ class SlackService {
 
         val slackPayload = Json.encodeToString(SlackPayload(message))
         val resp = slack.send(webhook, slackPayload)
-        println(resp)
+        logger.info("Sent message to slack: ${resp.code}")
     }
 
 
