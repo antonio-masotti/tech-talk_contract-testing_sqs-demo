@@ -6,6 +6,8 @@ plugins {
     kotlin("jvm") version "1.9.20"
     id("io.ktor.plugin") version "2.3.6"
     id("org.jetbrains.kotlin.plugin.serialization") version "1.9.20"
+//    id("au.com.dius.pact") version "4.3.19"
+
 }
 
 group = "com.bikeleasing"
@@ -47,7 +49,12 @@ dependencies {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+    // https://docs.pact.io/implementation_guides/jvm/docs/system-properties
     //systemProperties["pact.rootDir"] = "$projectDir/pacts"
+    systemProperties["pactbroker.url"] = System.getenv("PACT_BROKER_URL")
+    systemProperties["pactbroker.auth.token"] = System.getenv("PACT_BROKER_TOKEN")
+    systemProperties["pact.verifier.publishResults"] = true
+    systemProperties["pact.provider.version"] = "0.0.1"
 }
 
 tasks.register("prepareKotlinBuildScriptModel"){}
