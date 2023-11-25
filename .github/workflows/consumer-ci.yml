@@ -31,8 +31,8 @@ jobs:
 
       - name: "🔎 Run tests"
         run: |
-          ./gradlew pact-sqs-demo:sqs-consumer check
+          ./gradlew sqs-consumer:check
 
       - name: "📦 Publish contract"
         run: |
-          ./gradlew pact-sqs-demo:sqs-consumer pactPublish
+          ./gradlew sqs-consumer:pactPublish

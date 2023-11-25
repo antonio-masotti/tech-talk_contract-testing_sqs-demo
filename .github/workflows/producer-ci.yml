@@ -29,10 +29,6 @@ jobs:
       - name: "🔧 Setup Gradle"
         uses: gradle/gradle-build-action@v2
 
-      - name: "🔎 Run tests"
+      - name: "🔎 Run tests and publish verification"
         run: |
-          ./gradlew pact-sqs-demo:sqs-producer check
-
-      - name: "📦 Publish contract"
-        run: |
-          ./gradlew pact-sqs-demo:sqs-producer pactPublish
+          ./gradlew sqs-producer:check
