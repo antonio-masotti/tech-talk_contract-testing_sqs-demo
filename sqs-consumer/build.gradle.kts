@@ -6,6 +6,7 @@ plugins {
     kotlin("jvm") version "1.9.20"
     id("io.ktor.plugin") version "2.3.6"
     id("org.jetbrains.kotlin.plugin.serialization") version "1.9.20"
+    id("au.com.dius.pact") version "4.0.10"
 }
 
 group = "com.bikeleasing"
@@ -46,3 +47,25 @@ tasks.withType<Test> {
     useJUnitPlatform()
     systemProperties["pact.rootDir"] = "$projectDir/pacts"
 }
+
+tasks.register("prepareKotlinBuildScriptModel"){}
+
+
+//fun getBranch(): String {
+//    val os = org.apache.commons.io.output.ByteArrayOutputStream()
+//    project.exec {
+//        commandLine = "git describe --long".split(" ")
+//        standardOutput = os
+//    }
+//    return String(os.toByteArray()).trim()
+//}
+//
+//
+//pact {
+//    publish {
+//        pactDirectory = "pacts"
+//        pactBrokerUrl = System.getenv("PACT_BROKER_URL")
+//        pactBrokerToken = System.getenv("PACT_BROKER_TOKEN")
+//        tags = listOf(getBranch(),"test", "prod")
+//    }
+//}

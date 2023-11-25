@@ -49,3 +49,5 @@ tasks.withType<Test> {
     useJUnitPlatform()
     //systemProperties["pact.rootDir"] = "$projectDir/pacts"
 }
+
+tasks.register("prepareKotlinBuildScriptModel"){}
