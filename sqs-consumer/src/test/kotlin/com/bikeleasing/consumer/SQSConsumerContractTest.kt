@@ -43,8 +43,8 @@ class SQSConsumerContractTest {
         val message = messages.first()
         val sqsMessage = Json.decodeFromString<SQSMessage>(message.contents.valueAsString())
 
-        assert(sqsMessage.md5OfBody == "ed076287532e86365e841e92bfc50d8c")
         assert(sqsMessage.body == "Hello World!")
+        assert(sqsMessage.md5OfBody == "ed076287532e86365e841e92bfc50d8c")
 
         if (sqsMessage.messageAttributes.isNotEmpty()) {
             assert(sqsMessage.messageAttributes["destination"]?.stringValue == "slack")

@@ -31,14 +31,11 @@ class SQSPactTest {
     @TestTemplate
     @ExtendWith(PactVerificationInvocationContextProvider::class)
     fun pactVerificationTestTemplate(context: PactVerificationContext) {
-        logger.info("testTemplate called")
         context.verifyInteraction()
-        logger.info("testTemplate finished")
     }
 
     @BeforeEach
     fun before(context: PactVerificationContext) {
-        logger.info("before")
         context.target = MessageTestTarget(packagesToScan = listOf(this::class.java.packageName))
     }
 
