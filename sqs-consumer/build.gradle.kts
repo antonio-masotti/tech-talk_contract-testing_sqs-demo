@@ -10,7 +10,7 @@ plugins {
 }
 
 group = "com.bikeleasing"
-version = "0.0.1"
+version = "0.0.2"
 
 application {
     mainClass.set("com.bikeleasing.ApplicationKt")
@@ -51,21 +51,21 @@ tasks.withType<Test> {
 tasks.register("prepareKotlinBuildScriptModel"){}
 
 
-//fun getBranch(): String {
-//    val os = org.apache.commons.io.output.ByteArrayOutputStream()
-//    project.exec {
-//        commandLine = "git describe --long".split(" ")
-//        standardOutput = os
-//    }
-//    return String(os.toByteArray()).trim()
-//}
-//
-//
-//pact {
-//    publish {
-//        pactDirectory = "pacts"
-//        pactBrokerUrl = System.getenv("PACT_BROKER_URL")
-//        pactBrokerToken = System.getenv("PACT_BROKER_TOKEN")
-//        tags = listOf(getBranch(),"test", "prod")
-//    }
-//}
+fun getBranch(): String {
+    val os = org.apache.commons.io.output.ByteArrayOutputStream()
+    project.exec {
+        commandLine = "git rev-parse --abbrev-ref HEAD".split(" ")
+        standardOutput = os
+    }
+    return String(os.toByteArray()).trim()
+}
+
+
+pact {
+    publish {
+        pactDirectory = "$projectDir/pacts"
+        pactBrokerUrl = System.getenv("PACT_BROKER_URL")
+        pactBrokerToken = System.getenv("PACT_BROKER_TOKEN")
+        tags = listOf(getBranch())
+    }
+}
