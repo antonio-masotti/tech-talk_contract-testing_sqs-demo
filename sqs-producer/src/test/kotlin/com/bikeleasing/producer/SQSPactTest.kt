@@ -8,6 +8,7 @@ import au.com.dius.pact.provider.junit5.PactVerificationContext
 import au.com.dius.pact.provider.junit5.PactVerificationInvocationContextProvider
 import au.com.dius.pact.provider.junitsupport.Provider
 import au.com.dius.pact.provider.junitsupport.State
+import au.com.dius.pact.provider.junitsupport.VerificationReports
 import au.com.dius.pact.provider.junitsupport.loader.PactFolder
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.TestTemplate
@@ -17,6 +18,7 @@ import org.slf4j.LoggerFactory
 
 @Provider("contract-testing")
 @PactFolder("pacts")
+@VerificationReports(value = ["console", "markdown", "json"], reportDir = "build/pact/reports")
 class SQSPactTest {
 
     private val logger = LoggerFactory.getLogger(SQSPactTest::class.java)
