@@ -40,8 +40,6 @@ jobs:
       - name: "🔎 Run tests"
         run: |
           ./gradlew sqs-consumer:check
-      - name: "Echo environment variables"
-        run: env
 
       - name: "📦 Publish contract"
         run: |
