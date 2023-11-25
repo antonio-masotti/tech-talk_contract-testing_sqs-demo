@@ -35,4 +35,7 @@ jobs:
 
       - name: "📦 Publish contract"
         run: |
+          echo $PACT_BROKER_URL
+          PACT_BROKER_TOKEN=$PACT_BROKER_TOKEN \
+          PACT_BROKER_URL=$PACT_BROKER_URL \
           ./gradlew sqs-consumer:pactPublish
