@@ -35,9 +35,11 @@ dependencies {
     implementation("com.slack.api:slack-api-client:1.30.0")
     implementation("io.ktor:ktor-server-swagger-jvm")
 
+    testImplementation("au.com.dius:pact-jvm-consumer:4.0.10")
+    testImplementation("au.com.dius:pact-jvm-consumer-junit5:4.0.10")
+
     testImplementation("io.ktor:ktor-server-tests-jvm")
     testImplementation("org.junit.jupiter:junit-jupiter:5.9.2")
-    implementation("au.com.dius.pact.consumer:junit5:4.4.6")
 }
 
 tasks.withType<Test> {

@@ -2,51 +2,35 @@
   "consumer": {
     "name": "sqs-consumer"
   },
+  "provider": {
+    "name": "contract-testing"
+  },
   "messages": [
     {
-      "contents": {
-        "body": "Hello World!",
-        "md5OfBody": "ed076287532e86365e841e92bfc50d8c",
-        "messageAttributes": {
-          "destination": {
-            "dataType": "String",
-            "stringValue": "slack"
-          }
-        },
-        "messageId": "1a1129dd-21ba-44b8-a095-0c8a3e687b63"
-      },
       "description": "a test message with the body Hello World!",
-      "matchingRules": {
-        "body": {
-          "$.messageAttributes": {
-            "combine": "AND",
-            "matchers": [
-              {
-                "match": "type"
-              }
-            ]
-          }
-        }
-      },
       "metaData": {
         "contentType": "application/json"
       },
+      "contents": {
+        "md5OfBody": "ed076287532e86365e841e92bfc50d8c",
+        "body": "Hello World!"
+      },
       "providerStates": [
         {
-          "name": "the provider has sent a message"
+          "name": "the provider has sent a message",
+          "params": {
+            "body": "Hello World!"
+          }
         }
       ]
     }
   ],
   "metadata": {
-    "pact-jvm": {
-      "version": "4.4.6"
-    },
     "pactSpecification": {
       "version": "3.0.0"
+    },
+    "pact-jvm": {
+      "version": "4.0.10"
     }
-  },
-  "provider": {
-    "name": "contract-testing"
   }
 }

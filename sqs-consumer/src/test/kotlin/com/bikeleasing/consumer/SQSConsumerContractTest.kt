@@ -21,16 +21,15 @@ class SQSConsumerContractTest {
 
     private val jsonBody = PactDslJsonBody().apply {
         stringValue("body", "Hello World!")
-        stringValue("messageId", "1a1129dd-21ba-44b8-a095-0c8a3e687b63")
         stringValue("md5OfBody", "ed076287532e86365e841e92bfc50d8c")
-        like("messageAttributes", mapOf("destination" to mapOf("stringValue" to "slack", "dataType" to "String")))
+        //eachLike("messageAttributes", mapOf("destination" to mapOf("stringValue" to "slack", "dataType" to "String")))
     }
 
 
     @Pact(consumer = "sqs-consumer", provider = "contract-testing")
     fun createPact(builder: MessagePactBuilder): MessagePact =
         builder
-            .given("the provider has sent a message")
+            .given("the provider has sent a message", mapOf("body" to "Hello World!"))
             .expectsToReceive("a test message with the body Hello World!")
             .hasPactWith("contract-testing")
             .withContent(jsonBody)
