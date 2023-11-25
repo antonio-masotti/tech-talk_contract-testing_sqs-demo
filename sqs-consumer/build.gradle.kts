@@ -45,7 +45,11 @@ dependencies {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+    // https://docs.pact.io/implementation_guides/jvm/docs/system-properties
     systemProperties["pact.rootDir"] = "$projectDir/pacts"
+    systemProperties["pactbroker.url"] = System.getenv("PACT_BROKER_URL")
+    systemProperties["pactbroker.auth.token"] = System.getenv("PACT_BROKER_TOKEN")
+    systemProperties["pact.verifier.publishResults"] = true
 }
 
 tasks.register("prepareKotlinBuildScriptModel"){}
