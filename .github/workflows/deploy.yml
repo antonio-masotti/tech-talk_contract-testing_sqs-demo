@@ -1,0 +1,43 @@
+name: Pact Demo Deployment
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+
+env:
+  DOPPLER_CONFIG: ${{ secrets.DOPPLER_CONFIG }}
+  DOPPLER_ENVIRONMENT: ${{ secrets.DOPPLER_ENVIRONMENT }}
+  DOPPLER_PROJECT: ${{ secrets.DOPPLER_PROJECT }}
+  PACT_BROKER_TOKEN: ${{ secrets.PACT_BROKER_TOKEN }}
+  PACT_BROKER_URL: ${{ secrets.PACT_BROKER_URL }}
+  QUEUE_URL: ${{ secrets.QUEUE_URL }}
+  SLACK_URL: ${{ secrets.SLACK_URL }}
+
+
+jobs:
+  test-consumer:
+    name: "test-consumer"
+    uses: ./.github/workflows/consumer-ci.yml
+    secrets: inherit
+  test-producer:
+    name: "test-producer"
+    uses: ./.github/workflows/producer-ci.yml
+    secrets: inherit
+  can-i-deploy:
+    name: CanIDeploy
+    needs: [test-consumer, test-producer]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Can I deploy?
+        run: GIT_BRANCH=${GITHUB_REF:11} make can_i_deploy
+  deploy:
+    runs-on: ubuntu-latest
+    needs: can-i-deploy
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy
+        run: make deploy

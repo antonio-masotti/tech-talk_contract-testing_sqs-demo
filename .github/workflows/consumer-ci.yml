@@ -1,0 +1,38 @@
+name: Consumer Test
+
+on:
+  workflow_call:
+  workflow_dispatch:
+
+
+jobs:
+  test-consumer:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "🗑 Free disk space"
+        run: |
+          sudo rm -rf "/usr/local/share/boost"
+          sudo rm -rf "$AGENT_TOOLSDIRECTORY"
+          sudo apt-get clean
+          df -h
+      - name: "📥 Checkout repository"
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: 17
+          distribution: 'corretto'
+
+      - name: "🔧 Setup Gradle"
+        uses: gradle/gradle-build-action@v2
+
+      - name: "🔎 Run tests"
+        run: |
+          ./gradlew pact-sqs-demo:sqs-consumer check
+
+      - name: "📦 Publish contract"
+        run: |
+          ./gradlew pact-sqs-demo:sqs-consumer pactPublish
