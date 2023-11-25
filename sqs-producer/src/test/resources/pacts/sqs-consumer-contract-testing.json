@@ -1,0 +1,36 @@
+{
+  "consumer": {
+    "name": "sqs-consumer"
+  },
+  "provider": {
+    "name": "contract-testing"
+  },
+  "messages": [
+    {
+      "description": "a test message with the body Hello World!",
+      "metaData": {
+        "contentType": "application/json"
+      },
+      "contents": {
+        "md5OfBody": "ed076287532e86365e841e92bfc50d8c",
+        "body": "Hello World!"
+      },
+      "providerStates": [
+        {
+          "name": "the provider has sent a message",
+          "params": {
+            "body": "Hello World!"
+          }
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "pactSpecification": {
+      "version": "3.0.0"
+    },
+    "pact-jvm": {
+      "version": "4.0.10"
+    }
+  }
+}

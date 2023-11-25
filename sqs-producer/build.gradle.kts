@@ -20,9 +20,9 @@ application {
 
 repositories {
     mavenCentral()
-    repositories {
-        maven { url = uri("https://jitpack.io") }
-    }
+//    repositories {
+//        maven { url = uri("https://jitpack.io") }
+//    }
 }
 
 dependencies {
@@ -37,8 +37,12 @@ dependencies {
     implementation("io.github.smiley4:ktor-swagger-ui:2.7.1")
 
 
+
+    testImplementation("org.junit.jupiter:junit-jupiter:5.9.2")
     testImplementation("io.ktor:ktor-server-tests-jvm")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
+    //testImplementation("au.com.dius:pact-jvm-provider:4.2.14")
+    implementation("au.com.dius.pact.provider:junit5:4.3.19")
 }
 
 tasks.withType<Test> {
