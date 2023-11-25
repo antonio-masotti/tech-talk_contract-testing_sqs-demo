@@ -52,7 +52,7 @@ tasks.withType<Test> {
     systemProperties["pactbroker.url"] = System.getenv("PACT_BROKER_URL")
     systemProperties["pactbroker.auth.token"] = System.getenv("PACT_BROKER_TOKEN")
     systemProperties["pact.verifier.publishResults"] = true
-    systemProperties["pact.provider.version"] = "0.0.1"
+    systemProperties["pact.provider.version"] = "0.0.2"
 }
 
 tasks.register("prepareKotlinBuildScriptModel"){}
