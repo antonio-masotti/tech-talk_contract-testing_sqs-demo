@@ -4,6 +4,14 @@ on:
   workflow_call:
   workflow_dispatch:
 
+env:
+  DOPPLER_CONFIG: ${{ secrets.DOPPLER_CONFIG }}
+  DOPPLER_ENVIRONMENT: ${{ secrets.DOPPLER_ENVIRONMENT }}
+  DOPPLER_PROJECT: ${{ secrets.DOPPLER_PROJECT }}
+  PACT_BROKER_TOKEN: ${{ secrets.PACT_BROKER_TOKEN }}
+  PACT_BROKER_URL: ${{ secrets.PACT_BROKER_URL }}
+  QUEUE_URL: ${{ secrets.QUEUE_URL }}
+  SLACK_URL: ${{ secrets.SLACK_URL }}
 
 jobs:
   test-consumer:
