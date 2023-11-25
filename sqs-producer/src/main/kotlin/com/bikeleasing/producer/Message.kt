@@ -3,10 +3,9 @@ package com.bikeleasing.producer
 import aws.sdk.kotlin.services.sqs.model.MessageAttributeValue
 import aws.sdk.kotlin.services.sqs.model.SendMessageRequest
 import com.bikeleasing.extensions.md5
-import com.bikeleasing.extensions.sha256
 
 class Message(private val body: String, private val destination: String = "slack")  {
-    private val md5OfBody = body.sha256()
+    private val md5OfBody = body.md5()
 
     fun toSQSRequest(): SendMessageRequest {
         val slackDestination = MessageAttributeValue {

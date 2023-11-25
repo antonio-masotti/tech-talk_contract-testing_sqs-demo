@@ -8,8 +8,10 @@ plugins {
     id("org.jetbrains.kotlin.plugin.serialization") version "1.9.20"
 }
 
+val producerVersion = "0.0.3"
+
 group = "com.bikeleasing"
-version = "0.0.1"
+version = producerVersion
 
 application {
     mainClass.set("com.bikeleasing.ApplicationKt")
@@ -52,7 +54,7 @@ tasks.withType<Test> {
     systemProperties["pactbroker.url"] = System.getenv("PACT_BROKER_URL")
     systemProperties["pactbroker.auth.token"] = System.getenv("PACT_BROKER_TOKEN")
     systemProperties["pact.verifier.publishResults"] = true
-    systemProperties["pact.provider.version"] = "0.0.2"
+    systemProperties["pact.provider.version"] = producerVersion
 }
 
 tasks.register("prepareKotlinBuildScriptModel"){}
