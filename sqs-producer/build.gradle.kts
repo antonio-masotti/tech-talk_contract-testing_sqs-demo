@@ -6,8 +6,6 @@ plugins {
     kotlin("jvm") version "1.9.20"
     id("io.ktor.plugin") version "2.3.6"
     id("org.jetbrains.kotlin.plugin.serialization") version "1.9.20"
-//    id("au.com.dius.pact") version "4.3.19"
-
 }
 
 group = "com.bikeleasing"
