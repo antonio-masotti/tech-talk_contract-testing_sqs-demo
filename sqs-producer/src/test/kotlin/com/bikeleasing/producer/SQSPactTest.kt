@@ -1,7 +1,5 @@
 package com.bikeleasing.producer
 
-import au.com.dius.pact.core.model.v4.MessageContents
-import au.com.dius.pact.provider.MessageAndMetadata
 import au.com.dius.pact.provider.PactVerifyProvider
 import au.com.dius.pact.provider.junit5.MessageTestTarget
 import au.com.dius.pact.provider.junit5.PactVerificationContext
@@ -10,7 +8,6 @@ import au.com.dius.pact.provider.junitsupport.Provider
 import au.com.dius.pact.provider.junitsupport.State
 import au.com.dius.pact.provider.junitsupport.VerificationReports
 import au.com.dius.pact.provider.junitsupport.loader.PactBroker
-import au.com.dius.pact.provider.junitsupport.loader.PactFolder
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.TestTemplate
 import org.junit.jupiter.api.extension.ExtendWith
